@@ -15,7 +15,7 @@ transactions.
 ## Solution Structure
 
 ```
-battery-exchange-cabinet/
+battery-swap/
 ├─ backend/
 │  ├─ BatterySwap.sln
 │  └─ src/
