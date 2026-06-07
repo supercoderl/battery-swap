@@ -25,11 +25,11 @@ jobs:
 
       - name: Build with dotnet
         working-directory: ./backend
-        run: dotnet build backend/BatterySwap.sln --configuration Release
+        run: dotnet build BatterySwap.sln --configuration Release
 
       - name: dotnet publish
         working-directory: ./backend
-        run: dotnet publish backend/src/BatterySwap.API/BatterySwap.API.csproj -c Release -o "${{env.DOTNET_ROOT}}/myapp"
+        run: dotnet publish src/BatterySwap.API/BatterySwap.API.csproj -c Release -o "${{env.DOTNET_ROOT}}/myapp"
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
