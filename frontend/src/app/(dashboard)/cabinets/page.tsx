@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -29,6 +30,7 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 export default function CabinetsPage() {
+  const router = useRouter();
   const [page, setPage] = React.useState(1);
   const [search, setSearch] = React.useState("");
   const [statusFilter, setStatusFilter] = React.useState<string>("all");
@@ -79,7 +81,10 @@ export default function CabinetsPage() {
     { header: "Status", cell: (c) => <CabinetStatusBadge status={c.status} /> },
     { header: "Slots", cell: (c) => <span>{c.occupiedSlots}/{c.slotCount} occupied</span> },
     { header: "Created", cell: (c) => <span className="text-muted-foreground">{formatDate(c.createdAt, false)}</span> },
-    { header: "", className: "w-12 text-right", cell: (c) => <RowActions onEdit={() => openEdit(c)} onDelete={() => setDeleting(c)} /> },
+    {
+      header: "", className: "w-12 text-right",
+      cell: (c) => <RowActions onView={() => router.push(`/cabinets/${c.id}`)} onEdit={() => openEdit(c)} onDelete={() => setDeleting(c)} />,
+    },
   ];
 
   const submitting = create.isPending || update.isPending;
@@ -102,6 +107,7 @@ export default function CabinetsPage() {
         onSearchChange={(v) => { setSearch(v); setPage(1); }}
         searchPlaceholder="Search by model…"
         rowKey={(c) => c.id}
+        onRowClick={(c) => router.push(`/cabinets/${c.id}`)}
         toolbar={
           <Select value={statusFilter} onValueChange={(v) => { setStatusFilter(v); setPage(1); }}>
             <SelectTrigger className="w-40"><SelectValue placeholder="Status" /></SelectTrigger>
